@@ -15,9 +15,21 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.common.CommonMiddleware",
      "django.middleware.security.SecurityMiddleware",
+
+    # WhiteNoise for static files
     "whitenoise.middleware.WhiteNoiseMiddleware",
+
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+
+    
+  #  "django.middleware.common.CommonMiddleware",
+ #    "django.middleware.security.SecurityMiddleware",
+  #  "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "career_project.urls"
@@ -43,3 +55,7 @@ DATABASES = {
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "careerapp" / "static"]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
