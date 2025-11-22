@@ -9,7 +9,16 @@ SECRET_KEY = "django-insecure-assignment-key"  # for local use only
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
+# ----------------------------------------------------
+# REQUIRED DJANGO APPS (Your biggest error)
+# ----------------------------------------------------
+
 INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
     "django.contrib.staticfiles",
     "careerapp",
 ]
@@ -36,12 +45,25 @@ ROOT_URLCONF = "career_project.urls"
 
 TEMPLATES = [
     {
+        # "BACKEND": "django.template.backends.django.DjangoTemplates",
+        # "DIRS": [BASE_DIR / "careerapp" / "templates"],
+        # "APP_DIRS": True,
+        # "OPTIONS": {},
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "careerapp" / "templates"],
         "APP_DIRS": True,
-        "OPTIONS": {},
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
     }
 ]
+    
+
 
 WSGI_APPLICATION = "career_project.wsgi.application"
 
