@@ -22,5 +22,7 @@ Data source for role skills: `careerapp/skills.json` (predefined).
 
 
 <img width="1392" height="616" alt="Screenshot 2025-11-22 172806" src="https://github.com/user-attachments/assets/0dd1c435-8022-43e6-afae-72e74b821763" />
+<img width="1267" height="977" alt="Screenshot 2025-11-22 172828" src="https://github.com/user-attachments/assets/cf18e7fb-4733-44b9-806d-6a727ce04be4" />
+
 
 
