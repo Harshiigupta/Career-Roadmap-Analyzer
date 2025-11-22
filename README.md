@@ -20,3 +20,7 @@ Data source for role skills: `careerapp/skills.json` (predefined).
 2. (Optional) create and activate a virtual environment.
 3. Install requirements:
 
+
+<img width="1392" height="616" alt="Screenshot 2025-11-22 172806" src="https://github.com/user-attachments/assets/0dd1c435-8022-43e6-afae-72e74b821763" />
+
+
