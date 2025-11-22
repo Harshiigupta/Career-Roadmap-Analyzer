@@ -1,0 +1,38 @@
+{
+  "Frontend Developer": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Git",
+    "Projects", "API Integration", "Deployment"
+      
+  ],
+  "Backend Developer": [
+    "Java",
+    "Spring Boot",
+    "SQL",
+    "APIs",
+    "Git",
+    "python",
+    "django"
+  ],
+  "Data Analyst": [
+    "Excel",
+    "SQL",
+    "Python",
+    "Dashboards",
+    "Statistics"
+  ],
+  "Full Stack Developer": [
+    "HTML", "CSS", "JavaScript", "React",
+    "Python", "Django", "REST APIs",
+    "Git", "SQL", "Deployment"
+  ],
+  
+  "Machine Learning Engineer": [
+    "Python", "NumPy", "Pandas", "Scikit-Learn",
+    "Statistics", "Linear Algebra", "Neural Networks",
+    "TensorFlow", "ML Ops Basics"
+  ]
+}

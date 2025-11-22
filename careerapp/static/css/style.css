@@ -1,0 +1,78 @@
+body {
+    background: linear-gradient(to bottom right,#88c6ff,#c79fff);
+    font-family: "Inter", sans-serif;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.7);
+    padding: 25px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    backdrop-filter: blur(8px);
+}
+
+.form-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.field {
+    flex: 1;
+    min-width: 260px;
+}
+
+.long { flex-basis: 100%; }
+
+input, select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #dccfff;
+    border-radius: 8px;
+    background: #fff;
+}
+
+button {
+    padding: 12px 18px;
+    background: #b25cff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.left, .right, .bottom {
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+}
+
+.bottom {
+    grid-column: 1/-1;
+}
+
+/* TOAST */
+.toast {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff4f4f;
+    padding: 12px 20px;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: bold;
+}

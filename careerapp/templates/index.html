@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="toast" id="toast"></div>
+
+<div class="card">
+
+    <h2 style="margin-bottom: 15px;">Career Roadmap & Skill-Gap Analyzer</h2>
+
+    <div class="form-area">
+
+        <div class="field">
+            <label>Choose Target Role</label>
+            <select id="roleSelect"></select>
+        </div>
+
+        <div class="field">
+            <label>Or type target role</label>
+            <input type="text" id="roleInput" placeholder="e.g., Frontend Developer" />
+            <small id="roleSuggestion" style="color: #6b00b3;"></small>
+        </div>
+
+        <div class="field long">
+            <label>Your Current Skills (comma separated)</label>
+            <input type="text" id="skillInput" placeholder="e.g., HTML, SQL, Git" />
+        </div>
+
+        <button id="analyzeBtn">Analyze</button>
+
+    </div>
+
+    <div id="results" class="results" style="display:none;">
+        <div class="left">
+            <h3>Skill Gap</h3>
+            <div id="skillOut"></div>
+        </div>
+
+        <div class="right">
+            <h3>Career Roadmap</h3>
+            <div id="roadmapOut"></div>
+        </div>
+
+        <div class="bottom">
+            <h3>Latest Tech News</h3>
+            <div id="newsOut"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============= TOAST NOTIFICATION ==============
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.innerText = msg;
+    t.style.display = "block";
+    setTimeout(() => t.style.display = "none", 2500);
+}
+
+// ============= AUTO-FILL DROPDOWN FROM JSON ==============
+async function loadRoles() {
+    const res = await fetch("/static/roles.json");
+    const roles = await res.json();
+
+    const select = document.getElementById("roleSelect");
+    select.innerHTML = '<option value="">-- Select Role --</option>';
+
+    roles.forEach(r => {
+        const op = document.createElement("option");
+        op.value = r;
+        op.innerText = r;
+        select.appendChild(op);
+    });
+
+    window.ALL_ROLES = roles;
+}
+loadRoles();
+
+// ============= REAL-TIME ROLE MATCHING + SUGGESTIONS ==============
+document.getElementById("roleInput").addEventListener("input", function () {
+    let typed = this.value.toLowerCase().trim();
+    let suggestionBox = document.getElementById("roleSuggestion");
+
+    if (!typed) {
+        suggestionBox.innerText = "";
+        return;
+    }
+
+    let best = window.ALL_ROLES.find(r => r.toLowerCase().includes(typed));
+
+    if (best) {
+        suggestionBox.innerHTML = `Did you mean: <b>${best}</b>?`;
+        this.dataset.suggestedRole = best;
+    } else {
+        suggestionBox.innerHTML = `<span style="color:red;">No matching roles</span>`;
+        this.dataset.suggestedRole = "";
+    }
+});
+
+// ============= MAIN ANALYZE BUTTON CLICK ==============
+document.getElementById("analyzeBtn").onclick = async () => {
+
+    const dropdownRole = document.getElementById("roleSelect").value;
+    const manualRole = document.getElementById("roleInput").value.trim();
+    const suggestion = document.getElementById("roleInput").dataset.suggestedRole;
+
+    let role = "";
+
+    if (manualRole.length >= 3 && suggestion) {
+        role = suggestion;
+    } else {
+        role = dropdownRole;
+    }
+
+    if (!role) {
+        return showToast("Please enter or select a valid role.");
+    }
+
+    const skills = document
+        .getElementById("skillInput").value
+        .split(",")
+        .map(s => s.trim())
+        .filter(s => s);
+
+    document.getElementById("results").style.display = "grid";
+
+    // ========== SKILL GAP API ==========
+    const sg = await fetch("/api/skill-gap/", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ targetRole: role, currentSkills: skills })
+    }).then(r => r.json());
+
+    if (sg.error) {
+        document.getElementById("skillOut").innerHTML =
+            `<p style="color:red">${sg.error}</p>`;
+    } else {
+        document.getElementById("skillOut").innerHTML = `
+            <p><b>Required:</b> ${sg.requiredSkills.join(", ")}</p>
+            <p><b>Matched:</b> ${sg.matched.join(", ")}</p>
+            <p><b>Missing:</b> ${sg.missing.join(", ")}</p>
+        `;
+    }
+
+    // ========== ROADMAP API ==========
+    const rm = await fetch("/api/roadmap/", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({targetRole:role})
+    }).then(r => r.json());
+
+    document.getElementById("roadmapOut").innerHTML = `
+        <ol>${rm.roadmap.map(r => `<li>${r}</li>`).join("")}</ol>
+    `;
+
+    // ========== NEWS API ==========
+    const news = await fetch("/api/news/").then(r => r.json());
+    document.getElementById("newsOut").innerHTML =
+        news.map(n => `<p><a href="${n.url}" target="_blank">${n.title}</a></p>`).join("");
+};
+</script>
+
+{% endblock %}
